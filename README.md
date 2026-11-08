@@ -27,6 +27,9 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - Material You dynamic color on Android 12+: a small Capacitor plugin reads the
   wallpaper-based system palette and updates the M3 color tokens at runtime. Older
   Android versions fall back to the bundled baseline palette.
+- Material 3 adaptive launcher icon with a monochrome layer for Android themed icons,
+  plus matching light/dark splash screens. Source logo files live in `assets/`.
+- Hidden scrollbars for a cleaner full-screen mobile feel.
 - Roboto Variable and Material Symbols Rounded, bundled locally for offline use.
 - English UI with system light/dark theme.
 - Unit tests for every codec, including known vectors, Unicode, tampering, and wrong-password cases.
