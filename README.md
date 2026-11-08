@@ -1,8 +1,21 @@
 # Cipher Translator
 
-A private, offline cipher translator for Android. Paste text, pick a method, and encode or decode it without the text ever leaving the device.
+An offline cipher translator for Android. Paste text, pick a method, and encode or decode it without the text ever leaving the device.
 
-> **Status:** early development. The web MVP is functional; the Android wrapper and store release are next.
+> **Status:** Android MVP available as a debug APK. Play Store packaging is next.
+
+## Download
+
+[Download the latest debug APK](https://github.com/olcanaskar/cipher-translator/releases/latest)
+
+The APK is debug-signed for sideloading and testing. It is not a Play Store release build.
+
+## Preview
+
+<p align="center">
+  <img src="docs/screenshots/android-material-you.png" width="320" alt="Cipher Translator running with Material You dynamic colors on Android" />
+  <img src="docs/screenshots/alphabet-picker.png" width="320" alt="Language alphabet picker with twelve languages" />
+</p>
 
 ## Why it exists
 
@@ -47,7 +60,7 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - Capacitor 8 for the Android app
 - Custom `MaterialYou` Capacitor plugin (Java) for Android 12+ dynamic color
 
-No backend. The production app will bundle the built static files inside the APK.
+No backend. The Android app bundles the built static files inside the APK.
 
 ## Development
 
@@ -105,9 +118,13 @@ src/
 ## Roadmap
 
 - History and settings (local-only, clearable)
-- App icon, splash screen, release signing
+- Release signing and Play Store packaging
 - Optional PWA install and Android share-sheet intake
 
 ## License
 
-Private project. All rights reserved.
+Source code is publicly available for viewing. All rights reserved.
+
+The debug APK is provided for testing. Classical ciphers, Base64, Hex, and Binary
+are not secure encryption and should not be used to protect sensitive data.
+
