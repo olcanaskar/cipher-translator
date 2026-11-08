@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { alphabetLength, type AlphabetId, type CipherDefinition } from '../lib/ciphers'
 import { Icon } from './Icon'
 
@@ -25,91 +25,98 @@ export function KeyPanel({
 
   const shiftMax = alphabetLength(alphabet) - 1
   const shiftValue = Math.min(Math.max(Number(keyValue) || 1, 1), shiftMax)
+  const progress =
+    shiftMax > 1 ? ((shiftValue - 1) / (shiftMax - 1)) * 100 : 0
 
   return (
     <div className="key-panel">
       {cipher.keyKind === 'number' ? (
-        <div className="field">
-          <div className="field-label">
-            <span>Kaydırma</span>
-            <output className="shift-value" htmlFor="caesar-shift">
-              {shiftValue}
-            </output>
+        <div className="slider-field">
+          <div className="slider-head">
+            <label className="field-label" htmlFor="caesar-shift">
+              Kaydırma
+            </label>
+            <span className="slider-value">{shiftValue}</span>
           </div>
-          <div className="shift-row">
-            <span className="shift-end">1</span>
+          <div className="slider-row">
+            <span className="slider-end">1</span>
             <input
               id="caesar-shift"
+              className="md-slider"
               type="range"
               min={1}
               max={shiftMax}
               step={1}
               value={shiftValue}
+              style={{ '--slider-progress': `${progress}%` } as CSSProperties}
               onChange={(event) => onKeyChange(event.target.value)}
             />
-            <span className="shift-end">{shiftMax}</span>
+            <span className="slider-end">{shiftMax}</span>
           </div>
         </div>
       ) : null}
 
       {cipher.keyKind === 'text' ? (
-        <div className="field">
-          <label className="field-label" htmlFor="cipher-key">
-            <span>Anahtar kelime</span>
-          </label>
+        <div className="md-outlined-field">
           <input
             id="cipher-key"
-            className="text-input"
+            className="md-outlined-field__input"
             type="text"
             value={keyValue}
             onChange={(event) => onKeyChange(event.target.value)}
-            placeholder="ör. limon"
+            placeholder=" "
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
           />
+          <label className="md-outlined-field__label" htmlFor="cipher-key">
+            Anahtar kelime
+          </label>
         </div>
       ) : null}
 
       {cipher.keyKind === 'password' ? (
-        <div className="field">
-          <label className="field-label" htmlFor="cipher-password">
-            <span>Parola</span>
+        <div className="md-outlined-field md-outlined-field--with-icon">
+          <input
+            id="cipher-password"
+            className="md-outlined-field__input"
+            type={passwordVisible ? 'text' : 'password'}
+            value={keyValue}
+            onChange={(event) => onKeyChange(event.target.value)}
+            placeholder=" "
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+          />
+          <label className="md-outlined-field__label" htmlFor="cipher-password">
+            Parola
           </label>
-          <div className="password-wrap">
-            <input
-              id="cipher-password"
-              className="text-input"
-              type={passwordVisible ? 'text' : 'password'}
-              value={keyValue}
-              onChange={(event) => onKeyChange(event.target.value)}
-              placeholder="Güçlü bir parola seç"
-              autoComplete="off"
-              autoCapitalize="none"
-              spellCheck={false}
-            />
-            <button
-              type="button"
-              className="icon-button"
-              onClick={() => setPasswordVisible((visible) => !visible)}
-              aria-label={passwordVisible ? 'Parolayı gizle' : 'Parolayı göster'}
-            >
-              <Icon name={passwordVisible ? 'eyeOff' : 'eye'} size={19} />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="md-icon-button md-outlined-field__trailing"
+            onClick={() => setPasswordVisible((visible) => !visible)}
+            aria-label={passwordVisible ? 'Parolayı gizle' : 'Parolayı göster'}
+          >
+            <Icon name={passwordVisible ? 'eyeOff' : 'eye'} size={22} />
+          </button>
         </div>
       ) : null}
 
       {showAlphabet ? (
         <div className="alphabet-row">
-          <span className="field-label field-label--inline">Alfabe</span>
-          <div className="mini-segmented" role="group" aria-label="Alfabe seçimi">
+          <span className="field-label">Alfabe</span>
+          <div
+            className="segmented-button segmented-button--small"
+            role="group"
+            aria-label="Alfabe seçimi"
+          >
             <button
               type="button"
               className={alphabet === 'en' ? 'is-active' : ''}
               aria-pressed={alphabet === 'en'}
               onClick={() => onAlphabetChange('en')}
             >
+              {alphabet === 'en' ? <Icon name="check" size={16} /> : null}
               EN
             </button>
             <button
@@ -118,6 +125,7 @@ export function KeyPanel({
               aria-pressed={alphabet === 'tr'}
               onClick={() => onAlphabetChange('tr')}
             >
+              {alphabet === 'tr' ? <Icon name="check" size={16} /> : null}
               TR
             </button>
           </div>

@@ -133,223 +133,218 @@ function App() {
 
   return (
     <div className="app">
-      <div className="bg-orb bg-orb--one" aria-hidden="true" />
-      <div className="bg-orb bg-orb--two" aria-hidden="true" />
-
-      <div className={`shell${cipher.manual ? ' shell--with-action' : ''}`}>
-        <header className="topbar">
-          <div className="brand">
-            <span className="brand-mark">
-              <Icon name="lock" size={22} />
-            </span>
-            <div className="brand-copy">
-              <h1 className="brand-title">Şifre Çevirmen</h1>
-              <p className="brand-subtitle">şifrele · çöz · dönüştür</p>
-            </div>
-          </div>
-          <span className="offline-pill">
-            <span className="offline-dot" />
-            Offline
+      <header className="top-app-bar">
+        <div className="top-app-bar__brand">
+          <span className="app-logo">
+            <Icon name="lock" size={24} />
           </span>
-        </header>
+          <div className="brand-copy">
+            <h1 className="app-title">Şifre Çevirmen</h1>
+            <p className="app-subtitle">şifrele · çöz · dönüştür</p>
+          </div>
+        </div>
+        <span className="status-chip">
+          <Icon name="offline" size={18} />
+          Offline
+        </span>
+      </header>
 
-        <main className="workspace">
-          <section className="card input-card" aria-labelledby="source-label">
-            <div className="card-head">
-              <label className="card-label" id="source-label" htmlFor="source">
-                Metin
-              </label>
-              <span className="card-meta">
-                {input.length.toLocaleString('tr-TR')} karakter
-              </span>
-            </div>
-            <textarea
-              id="source"
-              className="card-textarea"
-              value={input}
-              onChange={(event) => updateInput(event.target.value)}
-              placeholder={inputPlaceholder}
-              spellCheck={false}
-            />
-            <div className="card-actions">
-              <button type="button" className="ghost-button" onClick={handlePaste}>
-                <Icon name="paste" size={16} />
-                Yapıştır
-              </button>
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={clear}
-                disabled={input.length === 0}
-              >
-                <Icon name="trash" size={16} />
-                Temizle
-              </button>
-            </div>
-          </section>
-
-          <div className="swap-row">
-            <span className="swap-line" />
+      <main className={`content${cipher.manual ? ' content--with-bar' : ''}`}>
+        <section className="card input-card" aria-labelledby="source-label">
+          <div className="card-head">
+            <label className="card-label" id="source-label" htmlFor="source">
+              Metin
+            </label>
+            <span className="supporting-text">
+              {input.length.toLocaleString('tr-TR')} karakter
+            </span>
+          </div>
+          <textarea
+            id="source"
+            className="card-textarea"
+            value={input}
+            onChange={(event) => updateInput(event.target.value)}
+            placeholder={inputPlaceholder}
+            spellCheck={false}
+          />
+          <div className="card-actions">
+            <button type="button" className="text-button" onClick={handlePaste}>
+              <Icon name="paste" size={18} />
+              Yapıştır
+            </button>
             <button
               type="button"
-              className="swap-button"
-              onClick={handleSwap}
-              disabled={output.length === 0 || isOneWay}
-              aria-label="Çıktıyı girişe taşı"
-              title="Çıktıyı girişe taşı"
+              className="text-button"
+              onClick={clear}
+              disabled={input.length === 0}
             >
-              <Icon name="swap" size={18} />
+              <Icon name="trash" size={18} />
+              Temizle
             </button>
-            <span className="swap-line" />
+          </div>
+        </section>
+
+        <div className="swap-row">
+          <span className="swap-line" />
+          <button
+            type="button"
+            className="swap-button"
+            onClick={handleSwap}
+            disabled={output.length === 0 || isOneWay}
+            aria-label="Çıktıyı girişe taşı"
+            title="Çıktıyı girişe taşı"
+          >
+            <Icon name="swap" size={20} />
+          </button>
+          <span className="swap-line" />
+        </div>
+
+        <section className="card method-card">
+          <div className="card-head">
+            <span className="card-label">Yöntem</span>
+            <span className="supporting-text">13 dönüşüm</span>
           </div>
 
-          <section className="card method-card">
-            <div className="card-head">
-              <span className="card-label">Yöntem</span>
-              <span className="card-meta">13 dönüşüm</span>
-            </div>
-
-            <button
-              type="button"
-              className="method-button"
-              onClick={() => setMethodPickerOpen(true)}
-              aria-haspopup="dialog"
-            >
-              <span className={`method-icon method-icon--${cipher.category}`}>
-                <Icon name={CATEGORY_ICONS[cipher.category]} size={19} />
-              </span>
-              <span className="method-copy">
-                <span className="method-name-row">
-                  <span className="method-name">{cipher.name}</span>
-                  <span className={`badge badge--${cipher.security}`}>
-                    {SECURITY_LABELS[cipher.security]}
-                  </span>
+          <button
+            type="button"
+            className="method-button"
+            onClick={() => setMethodPickerOpen(true)}
+            aria-haspopup="dialog"
+          >
+            <span className={`method-icon method-icon--${cipher.category}`}>
+              <Icon name={CATEGORY_ICONS[cipher.category]} size={22} />
+            </span>
+            <span className="method-copy">
+              <span className="method-name-row">
+                <span className="method-name">{cipher.name}</span>
+                <span className={`badge badge--${cipher.security}`}>
+                  {SECURITY_LABELS[cipher.security]}
                 </span>
-                <span className="method-desc">{cipher.description}</span>
               </span>
-              <span className="method-chevron">
-                <Icon name="chevronDown" size={18} />
-              </span>
-            </button>
+              <span className="method-desc">{cipher.description}</span>
+            </span>
+            <span className="method-chevron">
+              <Icon name="chevronDown" size={22} />
+            </span>
+          </button>
 
-            {isOneWay ? (
-              <div className="oneway-strip">
-                <Icon name="shield" size={16} />
-                <span>Tek yönlü işlem: çıktı geri döndürülemez.</span>
-              </div>
-            ) : (
-              <div className="segmented" role="group" aria-label="Dönüşüm yönü">
-                <button
-                  type="button"
-                  className={direction === 'encode' ? 'is-active' : ''}
-                  aria-pressed={direction === 'encode'}
-                  onClick={() => changeDirection('encode')}
-                >
-                  <Icon name="lock" size={16} />
-                  {encodeLabel}
-                </button>
-                <button
-                  type="button"
-                  className={direction === 'decode' ? 'is-active' : ''}
-                  aria-pressed={direction === 'decode'}
-                  onClick={() => changeDirection('decode')}
-                >
-                  <Icon name="unlock" size={16} />
-                  Çöz
-                </button>
-              </div>
-            )}
-
-            <KeyPanel
-              cipher={cipher}
-              keyValue={key}
-              alphabet={alphabet}
-              onKeyChange={updateKey}
-              onAlphabetChange={changeAlphabet}
-            />
-
-            {cipher.supportsAlphabet && alphabet === 'en' && hasTurkishCharacters ? (
+          {isOneWay ? (
+            <div className="oneway-strip">
+              <Icon name="shield" size={18} />
+              <span>Tek yönlü işlem: çıktı geri döndürülemez.</span>
+            </div>
+          ) : (
+            <div className="segmented-button segmented-button--full" role="group" aria-label="Dönüşüm yönü">
               <button
                 type="button"
-                className="alphabet-hint"
-                onClick={() => changeAlphabet('tr')}
+                className={direction === 'encode' ? 'is-active' : ''}
+                aria-pressed={direction === 'encode'}
+                onClick={() => changeDirection('encode')}
               >
-                <Icon name="alert" size={15} />
-                <span>Türkçe karakter algılandı · TR alfabesine geç</span>
+                <Icon name="lock" size={18} />
+                {encodeLabel}
               </button>
-            ) : null}
-
-            {cipher.note ? (
-              <p className="note-row">
-                <Icon name="shield" size={15} />
-                <span>{cipher.note}</span>
-              </p>
-            ) : null}
-          </section>
-
-          {error ? (
-            <div className="error-banner" role="alert">
-              <Icon name="alert" size={18} />
-              <span>{error}</span>
+              <button
+                type="button"
+                className={direction === 'decode' ? 'is-active' : ''}
+                aria-pressed={direction === 'decode'}
+                onClick={() => changeDirection('decode')}
+              >
+                <Icon name="unlock" size={18} />
+                Çöz
+              </button>
             </div>
+          )}
+
+          <KeyPanel
+            cipher={cipher}
+            keyValue={key}
+            alphabet={alphabet}
+            onKeyChange={updateKey}
+            onAlphabetChange={changeAlphabet}
+          />
+
+          {cipher.supportsAlphabet && alphabet === 'en' && hasTurkishCharacters ? (
+            <button
+              type="button"
+              className="alphabet-hint"
+              onClick={() => changeAlphabet('tr')}
+            >
+              <Icon name="info" size={18} />
+              <span>Türkçe karakter algılandı · TR alfabesine geç</span>
+            </button>
           ) : null}
 
-          <section className="card output-card" aria-labelledby="result-label" ref={outputCardRef}>
-            <div className="card-head">
-              <label className="card-label" id="result-label" htmlFor="result">
-                {isOneWay ? 'Özet' : 'Sonuç'}
-              </label>
-              <span className="card-meta">
-                {isBusy
-                  ? 'Hesaplanıyor…'
-                  : output.length > 0
-                    ? `${output.length.toLocaleString('tr-TR')} karakter`
-                    : 'Hazır'}
-              </span>
-            </div>
-            <textarea
-              id="result"
-              className="card-textarea card-textarea--output"
-              value={output}
-              readOnly
-              placeholder="Sonuç burada görünecek…"
-              spellCheck={false}
-            />
-            <div className="card-actions">
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={handleCopy}
-                disabled={output.length === 0}
-              >
-                <Icon name="copy" size={16} />
-                Kopyala
-              </button>
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={handleShare}
-                disabled={output.length === 0}
-              >
-                <Icon name="share" size={16} />
-                Paylaş
-              </button>
-            </div>
-          </section>
+          {cipher.note && (!isOneWay || cipher.id === 'md5') ? (
+            <p className="note-row">
+              <Icon name="shield" size={16} />
+              <span>{cipher.note}</span>
+            </p>
+          ) : null}
+        </section>
 
-          <p className="privacy-note">
-            <Icon name="shield" size={14} />
-            <span>Metin cihazından ayrılmaz; hiçbir sunucuya gönderilmez.</span>
-          </p>
-        </main>
-      </div>
+        {error ? (
+          <div className="error-banner" role="alert">
+            <Icon name="alert" size={20} />
+            <span>{error}</span>
+          </div>
+        ) : null}
 
-      {cipher.manual ? (
-        <div className="action-dock">
-          <div className="action-dock-inner">
+        <section className="card output-card" aria-labelledby="result-label" ref={outputCardRef}>
+          <div className="card-head">
+            <label className="card-label" id="result-label" htmlFor="result">
+              {isOneWay ? 'Özet' : 'Sonuç'}
+            </label>
+            <span className="supporting-text">
+              {isBusy
+                ? 'Hesaplanıyor…'
+                : output.length > 0
+                  ? `${output.length.toLocaleString('tr-TR')} karakter`
+                  : 'Hazır'}
+            </span>
+          </div>
+          <textarea
+            id="result"
+            className="card-textarea card-textarea--output"
+            value={output}
+            readOnly
+            placeholder="Sonuç burada görünecek…"
+            spellCheck={false}
+          />
+          <div className="card-actions">
             <button
               type="button"
-              className="primary-button"
+              className="text-button"
+              onClick={handleCopy}
+              disabled={output.length === 0}
+            >
+              <Icon name="copy" size={18} />
+              Kopyala
+            </button>
+            <button
+              type="button"
+              className="text-button"
+              onClick={handleShare}
+              disabled={output.length === 0}
+            >
+              <Icon name="share" size={18} />
+              Paylaş
+            </button>
+          </div>
+        </section>
+
+        <p className="privacy-note">
+          <Icon name="shield" size={16} />
+          <span>Metin cihazından ayrılmaz; hiçbir sunucuya gönderilmez.</span>
+        </p>
+      </main>
+
+      {cipher.manual ? (
+        <div className="bottom-bar">
+          <div className="bottom-bar__inner">
+            <button
+              type="button"
+              className="filled-button"
               onClick={handleConvert}
               disabled={!canConvert}
               aria-busy={isBusy}
@@ -357,7 +352,7 @@ function App() {
               {isBusy ? (
                 <span className="spinner" aria-hidden="true" />
               ) : (
-                <Icon name={actionIcon} size={19} />
+                <Icon name={actionIcon} size={20} />
               )}
               <span>{isBusy ? 'Hesaplanıyor…' : actionLabel}</span>
             </button>
@@ -373,7 +368,10 @@ function App() {
       />
 
       {toast ? (
-        <div className="toast" role="status">
+        <div
+          className={`snackbar${cipher.manual ? ' snackbar--above-bar' : ''}`}
+          role="status"
+        >
           {toast}
         </div>
       ) : null}

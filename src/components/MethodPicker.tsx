@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
@@ -24,7 +24,6 @@ const CATEGORY_ICONS: Record<CipherCategory, IconName> = {
 
 export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPickerProps) {
   const [query, setQuery] = useState('')
-  const searchRef = useRef<HTMLInputElement>(null)
 
   const close = useCallback(() => {
     setQuery('')
@@ -37,14 +36,12 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
-    const focusTimer = window.setTimeout(() => searchRef.current?.focus(), 80)
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') close()
     }
     document.addEventListener('keydown', handleKeyDown)
 
     return () => {
-      window.clearTimeout(focusTimer)
       document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = previousOverflow
     }
@@ -84,14 +81,11 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
       >
         <div className="sheet-handle" aria-hidden="true" />
         <header className="sheet-head">
-          <div>
-            <p className="sheet-eyebrow">Dönüşüm</p>
-            <h2 className="sheet-title" id="method-picker-title">
-              Yöntem seç
-            </h2>
-          </div>
+          <h2 className="sheet-title" id="method-picker-title">
+            Yöntem seç
+          </h2>
           <button type="button" className="sheet-close" onClick={close} aria-label="Kapat">
-            <Icon name="close" size={20} />
+            <Icon name="close" size={24} />
           </button>
         </header>
 
@@ -100,7 +94,6 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
             <Icon name="search" size={18} />
           </span>
           <input
-            ref={searchRef}
             className="text-input"
             type="search"
             value={query}

@@ -22,12 +22,17 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - English and Turkish alphabets for the classical ciphers that support them.
 - Live conversion for fast methods; explicit action for AES password derivation.
 - Copy, share, paste, clear, and output-to-input swap.
+- Material 3 (Material You baseline palette) design system: color roles, typography,
+  shapes, state layers, filled/outlined components, bottom sheet, and snackbar.
+- Roboto Variable and Material Symbols Rounded, bundled locally for offline use.
 - Turkish UI with system light/dark theme.
 - Unit tests for every codec, including known vectors, Unicode, tampering, and wrong-password cases.
 
 ## Tech stack
 
 - React 19 + TypeScript + Vite
+- Material 3 design tokens and components in plain CSS
+- Roboto Variable + Material Symbols Rounded, self-hosted
 - Web Crypto API for AES-GCM, PBKDF2, SHA-256, and SHA-512
 - `@noble/hashes` for MD5 compatibility
 - Vitest
@@ -77,6 +82,7 @@ src/
 
 - History and settings (local-only, clearable)
 - Capacitor Android wrapper and debug APK
+- Material You dynamic color on Android 12+ via Capacitor
 - App icon, splash screen, release signing
 - Optional PWA install and Android share-sheet intake
 - English UI

@@ -131,7 +131,7 @@ const vigenereCipher: CipherDefinition = {
   keyKind: 'text',
   security: 'classic',
   supportsAlphabet: true,
-  note: 'Anahtardaki harfler sırayla kullanılır; diğer karakterler yok sayılır.',
+  note: 'En az bir harf içeren bir anahtar girin. Anahtardaki harfler sırayla kullanılır.',
   encode: (input, context) => vigenere(input, context.key, context.alphabet, 'encode'),
   decode: (input, context) => vigenere(input, context.key, context.alphabet, 'decode'),
 }
