@@ -245,18 +245,18 @@ function App() {
             <label className="card-label" id="result-label" htmlFor="result">
               {isOneWay ? 'Digest' : 'Result'}
             </label>
-            <span className="supporting-text output-status">
-              {isBusy ? (
-                <>
-                  <span className="spinner spinner--small" aria-hidden="true" />
-                  Calculating…
-                </>
-              ) : output.length > 0 ? (
-                `${output.length.toLocaleString('en-US')} characters`
-              ) : (
-                'Ready'
-              )}
-            </span>
+            {isBusy || output.length > 0 ? (
+              <span className="supporting-text output-status">
+                {isBusy ? (
+                  <>
+                    <span className="spinner spinner--small" aria-hidden="true" />
+                    Calculating…
+                  </>
+                ) : (
+                  `${output.length.toLocaleString('en-US')} characters`
+                )}
+              </span>
+            ) : null}
           </div>
           <textarea
             id="result"
