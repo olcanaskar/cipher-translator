@@ -1,5 +1,7 @@
 # Cipher Translator
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 An offline cipher translator for Android. Paste text, pick a method, and encode or decode it without the text ever leaving the device.
 
 > **Status:** Android MVP available as a debug APK. Play Store packaging is next.
@@ -123,7 +125,9 @@ src/
 
 ## License
 
-Source code is publicly available for viewing. All rights reserved.
+Cipher Translator is open source under the [MIT License](LICENSE).
+
+Third-party assets keep their original licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 The debug APK is provided for testing. Classical ciphers, Base64, Hex, and Binary
 are not secure encryption and should not be used to protect sensitive data.
