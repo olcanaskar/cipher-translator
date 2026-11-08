@@ -18,4 +18,5 @@ export {
   getCipher,
   runCipher,
 } from './registry'
-export { ALPHABETS, alphabetLength } from './alphabets'
+export { ALPHABETS, ALPHABET_OPTIONS, alphabetLength } from './alphabets'
+export type { AlphabetOption } from './alphabets'

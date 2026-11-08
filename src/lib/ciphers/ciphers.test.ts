@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ALPHABETS, ALPHABET_OPTIONS } from './alphabets'
 import { aesDecrypt, aesEncrypt } from './aes'
 import {
   a1z26Decode,
@@ -79,6 +80,35 @@ describe('classical ciphers', () => {
   it('rejects unsupported Morse characters', () => {
     expect(() => morseEncode('ş')).toThrowError(/No Morse code for character/)
   })
+
+  it('provides a unique alphabet for every language option', () => {
+    expect(ALPHABET_OPTIONS).toHaveLength(12)
+
+    for (const [id, alphabet] of Object.entries(ALPHABETS)) {
+      expect(new Set(alphabet).size, `${id} contains a duplicate letter`).toBe(
+        alphabet.length,
+      )
+    }
+  })
+
+  const languageSamples = [
+    ['de', 'Grüße aus München'],
+    ['fr', 'Café déjà vu, œuvre et æther'],
+    ['es', 'Mañana será otro día'],
+    ['it', 'Città e perché'],
+    ['pt', 'Ação, coração e pão'],
+    ['nl', 'Een café in de stad'],
+    ['sv', 'Ångström och blåbär'],
+    ['da', 'Blåbærsyltetøj'],
+    ['no', 'Blåbærsyltetøy'],
+    ['pl', 'Zażółć gęślą jaźń'],
+  ] as const
+
+  for (const [alphabet, text] of languageSamples) {
+    it(`round-trips Caesar with the ${alphabet} alphabet`, () => {
+      expect(caesarDecode(caesarEncode(text, 7, alphabet), 7, alphabet)).toBe(text)
+    })
+  }
 })
 
 describe('encodings', () => {

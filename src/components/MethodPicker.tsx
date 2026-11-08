@@ -48,14 +48,19 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
   }, [close, open])
 
   const groups = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase('tr-TR')
+    const normalize = (value: string) =>
+      value
+        .toLocaleLowerCase('tr-TR')
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+    const normalized = normalize(query.trim())
     const filtered =
       normalized.length === 0
         ? CIPHERS
         : CIPHERS.filter((cipher) =>
-            `${cipher.name} ${cipher.description} ${CATEGORY_LABELS[cipher.category]}`
-              .toLocaleLowerCase('tr-TR')
-              .includes(normalized),
+            normalize(
+              `${cipher.name} ${cipher.description} ${CATEGORY_LABELS[cipher.category]}`,
+            ).includes(normalized),
           )
 
     return CATEGORY_ORDER.map((category) => ({

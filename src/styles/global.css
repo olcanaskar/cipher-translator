@@ -558,18 +558,6 @@ p {
   width: 100%;
 }
 
-.segmented-button--small {
-  border-radius: 20px;
-}
-
-.segmented-button--small button {
-  gap: 4px;
-  min-height: 32px;
-  padding: 0 12px;
-  font-size: 12px;
-  line-height: 16px;
-}
-
 .key-panel {
   display: flex;
   flex-direction: column;
@@ -768,6 +756,123 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.alphabet-control {
+  position: relative;
+  flex: none;
+}
+
+.alphabet-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 18px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.alphabet-trigger:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.alphabet-trigger.is-open {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.alphabet-trigger-code {
+  color: var(--md-sys-color-primary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.alphabet-trigger.is-open .alphabet-trigger-code {
+  color: inherit;
+}
+
+.alphabet-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  width: 220px;
+  max-height: 280px;
+  padding: 6px;
+  overflow-y: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.alphabet-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+}
+
+.alphabet-option:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.alphabet-option.is-selected {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.alphabet-option-code {
+  width: 24px;
+  flex: none;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.alphabet-option.is-selected .alphabet-option-code {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.alphabet-option-label {
+  flex: 1;
+}
+
+.alphabet-option-check {
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: var(--md-sys-color-primary);
+}
+
+.alphabet-option.is-selected .alphabet-option-check {
+  color: inherit;
 }
 
 .alphabet-hint {

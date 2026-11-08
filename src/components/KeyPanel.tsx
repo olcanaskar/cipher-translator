@@ -1,5 +1,10 @@
-import { useState, type CSSProperties } from 'react'
-import { alphabetLength, type AlphabetId, type CipherDefinition } from '../lib/ciphers'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  ALPHABET_OPTIONS,
+  alphabetLength,
+  type AlphabetId,
+  type CipherDefinition,
+} from '../lib/ciphers'
 import { Icon } from './Icon'
 
 interface KeyPanelProps {
@@ -18,8 +23,35 @@ export function KeyPanel({
   onAlphabetChange,
 }: KeyPanelProps) {
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [alphabetMenuOpen, setAlphabetMenuOpen] = useState(false)
+  const alphabetMenuRef = useRef<HTMLDivElement>(null)
   const showKey = cipher.keyKind !== 'none'
   const showAlphabet = Boolean(cipher.supportsAlphabet)
+
+  useEffect(() => {
+    if (!alphabetMenuOpen) return
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        alphabetMenuRef.current &&
+        !alphabetMenuRef.current.contains(event.target as Node)
+      ) {
+        setAlphabetMenuOpen(false)
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setAlphabetMenuOpen(false)
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [alphabetMenuOpen])
 
   if (!showKey && !showAlphabet) return null
 
@@ -27,6 +59,8 @@ export function KeyPanel({
   const shiftValue = Math.min(Math.max(Number(keyValue) || 1, 1), shiftMax)
   const progress =
     shiftMax > 1 ? ((shiftValue - 1) / (shiftMax - 1)) * 100 : 0
+  const selectedAlphabet =
+    ALPHABET_OPTIONS.find((option) => option.id === alphabet) ?? ALPHABET_OPTIONS[0]
 
   return (
     <div className="key-panel">
@@ -105,31 +139,48 @@ export function KeyPanel({
       {showAlphabet ? (
         <div className="alphabet-row">
           <span className="field-label">Alphabet</span>
-          <div
-            className="segmented-button segmented-button--small"
-            role="group"
-            aria-label="Alphabet selection"
-          >
+          <div className="alphabet-control" ref={alphabetMenuRef}>
             <button
               type="button"
-              className={alphabet === 'en' ? 'is-active' : ''}
-              aria-pressed={alphabet === 'en'}
-              aria-label="English alphabet"
-              onClick={() => onAlphabetChange('en')}
+              className={`alphabet-trigger${alphabetMenuOpen ? ' is-open' : ''}`}
+              aria-haspopup="listbox"
+              aria-expanded={alphabetMenuOpen}
+              aria-label={`Alphabet: ${selectedAlphabet.label}`}
+              onClick={() => setAlphabetMenuOpen((open) => !open)}
             >
-              {alphabet === 'en' ? <Icon name="check" size={16} /> : null}
-              EN
+              <span className="alphabet-trigger-code">{selectedAlphabet.code}</span>
+              <span>{selectedAlphabet.label}</span>
+              <Icon name="chevronDown" size={16} />
             </button>
-            <button
-              type="button"
-              className={alphabet === 'tr' ? 'is-active' : ''}
-              aria-pressed={alphabet === 'tr'}
-              aria-label="Turkish alphabet"
-              onClick={() => onAlphabetChange('tr')}
-            >
-              {alphabet === 'tr' ? <Icon name="check" size={16} /> : null}
-              TR
-            </button>
+
+            {alphabetMenuOpen ? (
+              <div className="alphabet-menu" role="listbox" aria-label="Alphabet">
+                {ALPHABET_OPTIONS.map((option) => {
+                  const selected = option.id === alphabet
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      role="option"
+                      aria-selected={selected}
+                      className={`alphabet-option${selected ? ' is-selected' : ''}`}
+                      onClick={() => {
+                        onAlphabetChange(option.id)
+                        setAlphabetMenuOpen(false)
+                      }}
+                    >
+                      <span className="alphabet-option-code">{option.code}</span>
+                      <span className="alphabet-option-label">{option.label}</span>
+                      {selected ? (
+                        <span className="alphabet-option-check">
+                          <Icon name="check" size={18} />
+                        </span>
+                      ) : null}
+                    </button>
+                  )
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

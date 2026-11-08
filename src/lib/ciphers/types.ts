@@ -1,4 +1,16 @@
-export type AlphabetId = 'en' | 'tr'
+export type AlphabetId =
+  | 'en'
+  | 'tr'
+  | 'de'
+  | 'fr'
+  | 'es'
+  | 'it'
+  | 'pt'
+  | 'nl'
+  | 'sv'
+  | 'da'
+  | 'no'
+  | 'pl'
 
 export type Direction = 'encode' | 'decode'
 
