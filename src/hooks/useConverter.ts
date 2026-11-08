@@ -11,6 +11,8 @@ import {
 } from '../lib/ciphers'
 
 const DEFAULT_CIPHER = CIPHERS[0]
+const LIVE_DELAY = 160
+const HEAVY_DELAY = 500
 
 function defaultKey(cipher: CipherDefinition): string {
   return cipher.keyKind === 'number' ? '3' : ''
@@ -75,35 +77,40 @@ export function useConverter() {
 
   const updateInput = useCallback(
     (value: string) => {
+      requestId.current += 1
       setInput(value)
-      if (cipher.manual || value.length === 0) {
-        cancelPending()
-      }
+      setError(null)
+      if (value.length === 0) cancelPending()
     },
-    [cancelPending, cipher.manual],
+    [cancelPending],
   )
 
   const updateKey = useCallback(
     (value: string) => {
+      requestId.current += 1
       setKey(value)
-      if (cipher.manual || (cipher.keyKind !== 'none' && value.trim().length === 0)) {
+      setError(null)
+      if (cipher.heavy) setOutput('')
+      if (cipher.keyKind !== 'none' && value.trim().length === 0) {
         cancelPending()
       }
     },
-    [cancelPending, cipher.keyKind, cipher.manual],
+    [cancelPending, cipher.heavy, cipher.keyKind],
   )
 
-  // Live conversion for fast ciphers. AES waits for the explicit action because
-  // every run performs a deliberately expensive password derivation.
+  // Every method converts live. AES performs PBKDF2 on every run, so it gets a
+  // longer debounce and a small busy state instead of an explicit submit button.
   useEffect(() => {
-    if (cipher.manual) return
     if (input.length === 0) return
     if (cipher.keyKind !== 'none' && key.trim().length === 0) return
 
     const currentRequest = requestId.current + 1
     requestId.current = currentRequest
+    const heavy = Boolean(cipher.heavy)
 
     const timer = window.setTimeout(() => {
+      if (heavy) setIsBusy(true)
+
       void (async () => {
         try {
           const result = await runCipher(cipher, direction, input, { key, alphabet })
@@ -114,9 +121,11 @@ export function useConverter() {
           if (requestId.current !== currentRequest) return
           setOutput('')
           setError(describeCipherError(caught))
+        } finally {
+          if (heavy && requestId.current === currentRequest) setIsBusy(false)
         }
       })()
-    }, 160)
+    }, heavy ? HEAVY_DELAY : LIVE_DELAY)
 
     return () => window.clearTimeout(timer)
   }, [alphabet, cipher, direction, input, key])
@@ -125,37 +134,6 @@ export function useConverter() {
     cancelPending()
     setInput('')
   }, [cancelPending])
-
-  const convert = useCallback(async (): Promise<boolean> => {
-    if (input.length === 0) {
-      setError('Önce bir metin girin.')
-      return false
-    }
-
-    if (cipher.keyKind !== 'none' && key.trim().length === 0) {
-      setError(cipher.keyKind === 'password' ? 'Bir parola girin.' : 'Bir anahtar girin.')
-      return false
-    }
-
-    const currentRequest = requestId.current + 1
-    requestId.current = currentRequest
-    setIsBusy(true)
-    setError(null)
-
-    try {
-      const result = await runCipher(cipher, direction, input, { key, alphabet })
-      if (requestId.current !== currentRequest) return false
-      setOutput(result)
-      return true
-    } catch (caught) {
-      if (requestId.current !== currentRequest) return false
-      setOutput('')
-      setError(describeCipherError(caught))
-      return false
-    } finally {
-      if (requestId.current === currentRequest) setIsBusy(false)
-    }
-  }, [alphabet, cipher, direction, input, key])
 
   const swap = useCallback((): boolean => {
     if (cipher.kind === 'one-way' || output.length === 0) return false
@@ -177,7 +155,6 @@ export function useConverter() {
     output,
     error,
     isBusy,
-    canConvert: input.length > 0 && !isBusy,
     isOneWay: cipher.kind === 'one-way',
     selectCipher,
     changeDirection,
@@ -185,7 +162,6 @@ export function useConverter() {
     updateInput,
     updateKey,
     clear,
-    convert,
     swap,
   }
 }

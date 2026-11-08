@@ -39,7 +39,7 @@ const aesGcm: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'password',
   security: 'strong',
-  manual: true,
+  heavy: true,
   encode: (input, context) => aesEncrypt(input, context.key),
   decode: (input, context) => aesDecrypt(input, context.key),
 }
@@ -52,7 +52,6 @@ const sha256Cipher: CipherDefinition = {
   kind: 'one-way',
   keyKind: 'none',
   security: 'one-way',
-  note: 'Tek yönlüdür; özetten orijinal metin geri elde edilemez.',
   encode: (input) => sha256(input),
 }
 
@@ -64,7 +63,6 @@ const sha512Cipher: CipherDefinition = {
   kind: 'one-way',
   keyKind: 'none',
   security: 'one-way',
-  note: 'Tek yönlüdür; özetten orijinal metin geri elde edilemez.',
   encode: (input) => sha512(input),
 }
 
@@ -76,7 +74,6 @@ const md5Cipher: CipherDefinition = {
   kind: 'one-way',
   keyKind: 'none',
   security: 'one-way',
-  note: 'Güvenlik için kullanılmamalıdır. Yalnızca eski uyumluluk için.',
   encode: (input) => md5Hex(input),
 }
 
@@ -89,7 +86,6 @@ const caesar: CipherDefinition = {
   keyKind: 'number',
   security: 'classic',
   supportsAlphabet: true,
-  note: 'Harfler alfabede kaydırılır; sayı ve noktalama korunur.',
   encode: (input, context) => caesarEncode(input, parseShift(context), context.alphabet),
   decode: (input, context) => caesarDecode(input, parseShift(context), context.alphabet),
 }
@@ -102,7 +98,6 @@ const rot13Cipher: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'none',
   security: 'classic',
-  note: 'Yalnızca İngiliz alfabesini dönüştürür. Şifreleme sayılmaz.',
   encode: (input) => rot13(input),
   decode: (input) => rot13(input),
 }
@@ -116,7 +111,6 @@ const atbashCipher: CipherDefinition = {
   keyKind: 'none',
   security: 'classic',
   supportsAlphabet: true,
-  note: 'A ↔ Z eşlemesi yapar. Şifreleme sayılmaz.',
   encode: (input, context) => atbash(input, context.alphabet),
   decode: (input, context) => atbash(input, context.alphabet),
 }
@@ -130,7 +124,6 @@ const vigenereCipher: CipherDefinition = {
   keyKind: 'text',
   security: 'classic',
   supportsAlphabet: true,
-  note: 'En az bir harf içeren bir anahtar girin. Anahtardaki harfler sırayla kullanılır.',
   encode: (input, context) => vigenere(input, context.key, context.alphabet, 'encode'),
   decode: (input, context) => vigenere(input, context.key, context.alphabet, 'decode'),
 }
@@ -144,7 +137,6 @@ const a1z26Cipher: CipherDefinition = {
   keyKind: 'none',
   security: 'classic',
   supportsAlphabet: true,
-  note: 'Yalnızca harf ve boşluk destekler. Noktalama kaydedilmez.',
   encode: (input, context) => a1z26Encode(input, context.alphabet),
   decode: (input, context) => a1z26Decode(input, context.alphabet),
 }
@@ -157,7 +149,6 @@ const morseCipher: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'none',
   security: 'classic',
-  note: 'Büyük/küçük harf kaybolur. Harfler boşlukla, kelimeler “ / ” ile ayrılır.',
   encode: (input) => morseEncode(input),
   decode: (input) => morseDecode(input),
 }
@@ -170,7 +161,6 @@ const base64Cipher: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'none',
   security: 'encoding',
-  note: 'Kodlamadır; gizlilik veya güvenlik sağlamaz.',
   encode: (input) => base64Encode(input),
   decode: (input) => base64Decode(input),
 }
@@ -183,7 +173,6 @@ const hexCipher: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'none',
   security: 'encoding',
-  note: 'Kodlamadır; gizlilik veya güvenlik sağlamaz.',
   encode: (input) => hexEncode(input),
   decode: (input) => hexDecode(input),
 }
@@ -196,7 +185,6 @@ const binaryCipher: CipherDefinition = {
   kind: 'reversible',
   keyKind: 'none',
   security: 'encoding',
-  note: 'Kodlamadır; gizlilik veya güvenlik sağlamaz.',
   encode: (input) => binaryEncode(input),
   decode: (input) => binaryDecode(input),
 }

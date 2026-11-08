@@ -24,9 +24,8 @@ export interface CipherDefinition {
   keyKind: KeyKind
   security: CipherSecurity
   supportsAlphabet?: boolean
-  /** Heavy operations (for example PBKDF2) wait for an explicit action. */
-  manual?: boolean
-  note?: string
+  /** Expensive derivation; live conversion uses a longer debounce. */
+  heavy?: boolean
   encode(input: string, context: CipherContext): string | Promise<string>
   decode?(input: string, context: CipherContext): string | Promise<string>
 }

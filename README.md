@@ -20,7 +20,7 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
   - Classical: Caesar, ROT13, Atbash, Vigenère, A1Z26, Morse
   - Encoding: Base64, Hex, Binary
 - English and Turkish alphabets for the classical ciphers that support them.
-- Live conversion for fast methods; explicit action for AES password derivation.
+- Live conversion for every method. AES uses a short debounce because PBKDF2 runs on each change.
 - Copy, share, paste, clear, and output-to-input swap.
 - Material 3 (Material You baseline palette) design system: color roles, typography,
   shapes, state layers, filled/outlined components, bottom sheet, and snackbar.

@@ -23,7 +23,6 @@ function App() {
     output,
     error,
     isBusy,
-    canConvert,
     isOneWay,
     selectCipher,
     changeDirection,
@@ -31,14 +30,12 @@ function App() {
     updateInput,
     updateKey,
     clear,
-    convert,
     swap,
   } = useConverter()
 
   const [methodPickerOpen, setMethodPickerOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const toastTimer = useRef<number | null>(null)
-  const outputCardRef = useRef<HTMLElement>(null)
 
   const showToast = useCallback((message: string) => {
     if (toastTimer.current !== null) window.clearTimeout(toastTimer.current)
@@ -93,34 +90,7 @@ function App() {
     if (swap()) showToast('Çıktı girişe taşındı.')
   }, [showToast, swap])
 
-  const handleConvert = useCallback(async () => {
-    const converted = await convert()
-    if (!converted) return
-
-    if (isOneWay) showToast('Özet oluşturuldu.')
-    else if (direction === 'decode') showToast('Metin çözüldü.')
-    else if (cipher.category === 'encoding') showToast('Metin kodlandı.')
-    else showToast('Metin şifrelendi.')
-
-    if (cipher.manual && window.matchMedia('(max-width: 639px)').matches) {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          outputCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        })
-      })
-    }
-  }, [cipher.category, cipher.manual, convert, direction, isOneWay, showToast])
-
   const encodeLabel = cipher.category === 'encoding' ? 'Kodla' : 'Şifrele'
-  const actionLabel = isOneWay ? 'Hashle' : direction === 'encode' ? encodeLabel : 'Çöz'
-  const actionIcon: IconName = isOneWay
-    ? 'hash'
-    : direction === 'decode'
-      ? 'unlock'
-      : cipher.category === 'encoding'
-        ? 'code'
-        : 'lock'
-
   const hasTurkishCharacters = /[çğıöşüÇĞİÖŞÜ]/u.test(input)
 
   const inputPlaceholder = isOneWay
@@ -142,7 +112,7 @@ function App() {
         </div>
       </header>
 
-      <main className={`content${cipher.manual ? ' content--with-bar' : ''}`}>
+      <main className="content">
         <section className="card input-card" aria-labelledby="source-label">
           <div className="card-head">
             <label className="card-label" id="source-label" htmlFor="source">
@@ -216,12 +186,7 @@ function App() {
             </span>
           </button>
 
-          {isOneWay ? (
-            <div className="oneway-strip">
-              <Icon name="shield" size={18} />
-              <span>Tek yönlü işlem: çıktı geri döndürülemez.</span>
-            </div>
-          ) : (
+          {isOneWay ? null : (
             <div className="segmented-button segmented-button--full" role="group" aria-label="Dönüşüm yönü">
               <button
                 type="button"
@@ -263,12 +228,6 @@ function App() {
             </button>
           ) : null}
 
-          {cipher.note && (!isOneWay || cipher.id === 'md5') ? (
-            <p className="note-row">
-              <Icon name="shield" size={16} />
-              <span>{cipher.note}</span>
-            </p>
-          ) : null}
         </section>
 
         {error ? (
@@ -278,17 +237,22 @@ function App() {
           </div>
         ) : null}
 
-        <section className="card output-card" aria-labelledby="result-label" ref={outputCardRef}>
+        <section className="card output-card" aria-labelledby="result-label">
           <div className="card-head">
             <label className="card-label" id="result-label" htmlFor="result">
               {isOneWay ? 'Özet' : 'Sonuç'}
             </label>
-            <span className="supporting-text">
-              {isBusy
-                ? 'Hesaplanıyor…'
-                : output.length > 0
-                  ? `${output.length.toLocaleString('tr-TR')} karakter`
-                  : 'Hazır'}
+            <span className="supporting-text output-status">
+              {isBusy ? (
+                <>
+                  <span className="spinner spinner--small" aria-hidden="true" />
+                  Hesaplanıyor…
+                </>
+              ) : output.length > 0 ? (
+                `${output.length.toLocaleString('tr-TR')} karakter`
+              ) : (
+                'Hazır'
+              )}
             </span>
           </div>
           <textarea
@@ -323,27 +287,6 @@ function App() {
 
       </main>
 
-      {cipher.manual ? (
-        <div className="bottom-bar">
-          <div className="bottom-bar__inner">
-            <button
-              type="button"
-              className="filled-button"
-              onClick={handleConvert}
-              disabled={!canConvert}
-              aria-busy={isBusy}
-            >
-              {isBusy ? (
-                <span className="spinner" aria-hidden="true" />
-              ) : (
-                <Icon name={actionIcon} size={20} />
-              )}
-              <span>{isBusy ? 'Hesaplanıyor…' : actionLabel}</span>
-            </button>
-          </div>
-        </div>
-      ) : null}
-
       <MethodPicker
         open={methodPickerOpen}
         selectedId={cipher.id}
@@ -352,10 +295,7 @@ function App() {
       />
 
       {toast ? (
-        <div
-          className={`snackbar${cipher.manual ? ' snackbar--above-bar' : ''}`}
-          role="status"
-        >
+        <div className="snackbar" role="status">
           {toast}
         </div>
       ) : null}
