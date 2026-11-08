@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#EADDFF" />
-  <svg x="8" y="8" width="48" height="48" viewBox="0 -960 960 960">
-    <path fill="#21005D" d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm296.5-143.5Q560-327 560-360t-23.5-56.5Q513-440 480-440t-56.5 23.5Q400-393 400-360t23.5 56.5Q447-280 480-280t56.5-23.5ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z" />
-  </svg>
+  <path
+    d="M25 30v-5a7 7 0 0 1 14 0v5"
+    fill="none"
+    stroke="#21005D"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <rect x="21" y="30" width="22" height="17.5" rx="5" fill="#21005D" />
+  <circle cx="32" cy="37" r="2.2" fill="#EADDFF" />
+  <rect x="31" y="38.5" width="2" height="4" rx="1" fill="#EADDFF" />
 </svg>

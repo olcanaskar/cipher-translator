@@ -110,7 +110,7 @@ function App() {
       <header className="top-app-bar">
         <div className="top-app-bar__brand">
           <span className="app-logo">
-            <Icon name="lock" size={24} />
+            <Icon name="lock" size={20} />
           </span>
           <h1 className="app-title">Cipher Translator</h1>
         </div>
