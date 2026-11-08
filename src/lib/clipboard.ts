@@ -38,7 +38,7 @@ export type ShareResult = 'shared' | 'copied' | 'failed'
 export async function shareText(text: string): Promise<ShareResult> {
   if (typeof navigator.share === 'function') {
     try {
-      await navigator.share({ title: 'Şifre Çevirmen', text })
+      await navigator.share({ title: 'Cipher Translator', text })
       return 'shared'
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {

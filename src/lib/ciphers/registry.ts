@@ -23,10 +23,10 @@ import type {
 function parseShift(context: CipherContext): number {
   const value = context.key.trim()
   if (value.length === 0) {
-    throw new CipherError('missing-key', 'Bir kaydırma değeri girin.')
+    throw new CipherError('missing-key', 'Enter a shift value.')
   }
   if (!/^-?\d+$/.test(value)) {
-    throw new CipherError('invalid-key', 'Kaydırma değeri tam sayı olmalı.')
+    throw new CipherError('invalid-key', 'Shift must be an integer.')
   }
   return Number(value)
 }
@@ -34,7 +34,7 @@ function parseShift(context: CipherContext): number {
 const aesGcm: CipherDefinition = {
   id: 'aes-gcm',
   name: 'AES-256-GCM',
-  description: 'Parola tabanlı gerçek şifreleme',
+  description: 'Password-based encryption',
   category: 'modern',
   kind: 'reversible',
   keyKind: 'password',
@@ -47,7 +47,7 @@ const aesGcm: CipherDefinition = {
 const sha256Cipher: CipherDefinition = {
   id: 'sha-256',
   name: 'SHA-256',
-  description: '256 bit kriptografik özet',
+  description: '256-bit cryptographic digest',
   category: 'hash',
   kind: 'one-way',
   keyKind: 'none',
@@ -58,7 +58,7 @@ const sha256Cipher: CipherDefinition = {
 const sha512Cipher: CipherDefinition = {
   id: 'sha-512',
   name: 'SHA-512',
-  description: '512 bit kriptografik özet',
+  description: '512-bit cryptographic digest',
   category: 'hash',
   kind: 'one-way',
   keyKind: 'none',
@@ -69,7 +69,7 @@ const sha512Cipher: CipherDefinition = {
 const md5Cipher: CipherDefinition = {
   id: 'md5',
   name: 'MD5',
-  description: 'Eski ve kırılgan özet',
+  description: 'Legacy, broken digest',
   category: 'hash',
   kind: 'one-way',
   keyKind: 'none',
@@ -79,8 +79,8 @@ const md5Cipher: CipherDefinition = {
 
 const caesar: CipherDefinition = {
   id: 'caesar',
-  name: 'Sezar',
-  description: 'Kaydırmalı klasik şifre',
+  name: 'Caesar',
+  description: 'Classical shift cipher',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'number',
@@ -93,7 +93,7 @@ const caesar: CipherDefinition = {
 const rot13Cipher: CipherDefinition = {
   id: 'rot13',
   name: 'ROT13',
-  description: 'Kendini çözen 13 kaydırma',
+  description: 'Self-inverse 13-letter shift',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'none',
@@ -105,7 +105,7 @@ const rot13Cipher: CipherDefinition = {
 const atbashCipher: CipherDefinition = {
   id: 'atbash',
   name: 'Atbash',
-  description: 'Alfabeyi tersine çevirir',
+  description: 'Reverses the alphabet',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'none',
@@ -118,7 +118,7 @@ const atbashCipher: CipherDefinition = {
 const vigenereCipher: CipherDefinition = {
   id: 'vigenere',
   name: 'Vigenère',
-  description: 'Anahtar kelimeli klasik şifre',
+  description: 'Keyword-based classical cipher',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'text',
@@ -131,7 +131,7 @@ const vigenereCipher: CipherDefinition = {
 const a1z26Cipher: CipherDefinition = {
   id: 'a1z26',
   name: 'A1Z26',
-  description: 'Harfleri sayılara çevirir',
+  description: 'Letters to numbers',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'none',
@@ -144,7 +144,7 @@ const a1z26Cipher: CipherDefinition = {
 const morseCipher: CipherDefinition = {
   id: 'morse',
   name: 'Morse',
-  description: 'Nokta ve çizgi kodu',
+  description: 'Dots and dashes',
   category: 'classical',
   kind: 'reversible',
   keyKind: 'none',
@@ -156,7 +156,7 @@ const morseCipher: CipherDefinition = {
 const base64Cipher: CipherDefinition = {
   id: 'base64',
   name: 'Base64',
-  description: 'Metni Base64’e kodlar',
+  description: 'Encode text as Base64',
   category: 'encoding',
   kind: 'reversible',
   keyKind: 'none',
@@ -168,7 +168,7 @@ const base64Cipher: CipherDefinition = {
 const hexCipher: CipherDefinition = {
   id: 'hex',
   name: 'Hex',
-  description: 'Metni onaltılık baytlara çevirir',
+  description: 'Text to hexadecimal bytes',
   category: 'encoding',
   kind: 'reversible',
   keyKind: 'none',
@@ -180,7 +180,7 @@ const hexCipher: CipherDefinition = {
 const binaryCipher: CipherDefinition = {
   id: 'binary',
   name: 'Binary',
-  description: 'Metni ikilik baytlara çevirir',
+  description: 'Text to binary bytes',
   category: 'encoding',
   kind: 'reversible',
   keyKind: 'none',
@@ -209,16 +209,16 @@ export const CATEGORY_ORDER: CipherCategory[] = ['modern', 'classical', 'encodin
 
 export const CATEGORY_LABELS: Record<CipherCategory, string> = {
   modern: 'Modern',
-  classical: 'Klasik',
-  encoding: 'Kodlama',
+  classical: 'Classical',
+  encoding: 'Encoding',
   hash: 'Hash',
 }
 
 export const SECURITY_LABELS: Record<CipherDefinition['security'], string> = {
-  strong: 'Güvenli',
-  classic: 'Klasik',
-  encoding: 'Kodlama',
-  'one-way': 'Tek yönlü',
+  strong: 'Secure',
+  classic: 'Classical',
+  encoding: 'Encoding',
+  'one-way': 'One-way',
 }
 
 export function getCipher(id: string): CipherDefinition | undefined {
@@ -233,7 +233,7 @@ export async function runCipher(
 ): Promise<string> {
   if (direction === 'decode') {
     if (!cipher.decode) {
-      throw new CipherError('invalid-input', 'Bu yöntem tek yönlüdür.')
+      throw new CipherError('invalid-input', 'This method is one-way.')
     }
     return cipher.decode(input, context)
   }

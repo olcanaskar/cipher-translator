@@ -77,7 +77,7 @@ describe('classical ciphers', () => {
   })
 
   it('rejects unsupported Morse characters', () => {
-    expect(() => morseEncode('ş')).toThrowError(/Morse kodu olmayan karakter/)
+    expect(() => morseEncode('ş')).toThrowError(/No Morse code for character/)
   })
 })
 

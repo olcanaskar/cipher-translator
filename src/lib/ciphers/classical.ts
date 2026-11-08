@@ -36,7 +36,7 @@ export function vigenere(
   if (shifts.length === 0) {
     throw new CipherError(
       'missing-key',
-      'Vigenère için en az bir harf içeren bir anahtar girin.',
+      'Enter a keyword containing at least one letter.',
     )
   }
 
@@ -61,7 +61,7 @@ export function a1z26Encode(input: string, alphabet: AlphabetId): string {
         if (index === -1) {
           throw new CipherError(
             'unsupported-characters',
-            `A1Z26 yalnızca harf ve boşluk destekler. Desteklenmeyen karakter: “${character}”`,
+            `A1Z26 only supports letters and spaces. Unsupported character: “${character}”`,
           )
         }
         numbers.push(String(index + 1))
@@ -81,13 +81,13 @@ export function a1z26Decode(input: string, alphabet: AlphabetId): string {
         .split('-')
         .map((part) => {
           if (!/^\d+$/.test(part)) {
-            throw new CipherError('invalid-input', 'A1Z26 çıktısı sayılar ve tirelerden oluşmalı.')
+            throw new CipherError('invalid-input', 'A1Z26 output must contain numbers and hyphens.')
           }
           const value = Number(part)
           if (value < 1 || value > letters.length) {
             throw new CipherError(
               'invalid-input',
-              `A1Z26 sayısı 1 ile ${letters.length} arasında olmalı.`,
+              `A1Z26 numbers must be between 1 and ${letters.length}.`,
             )
           }
           return letters[value - 1]
@@ -169,7 +169,7 @@ export function morseEncode(input: string): string {
           if (!code) {
             throw new CipherError(
               'unsupported-characters',
-              `Morse kodu olmayan karakter: “${character}”. A–Z, 0–9 ve temel noktalama kullanın.`,
+              `No Morse code for character: “${character}”. Use A–Z, 0–9, and basic punctuation.`,
             )
           }
           return code
@@ -193,7 +193,7 @@ export function morseDecode(input: string): string {
           if (!character) {
             throw new CipherError(
               'invalid-input',
-              `Geçersiz Morse kodu: “${code}”. Harfleri boşlukla, kelimeleri “ / ” ile ayırın.`,
+              `Invalid Morse code: “${code}”. Separate letters with spaces and words with “ / ”.`,
             )
           }
           return character

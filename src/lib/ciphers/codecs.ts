@@ -36,7 +36,7 @@ export function binaryDecode(input: string): string {
   if (!/^[01]+$/.test(clean) || clean.length % 8 !== 0) {
     throw new CipherError(
       'invalid-input',
-      'Binary metni sekiz bitlik gruplardan (yalnızca 0 ve 1) oluşmalı.',
+      'Binary must consist of 8-bit groups (only 0 and 1).',
     )
   }
 

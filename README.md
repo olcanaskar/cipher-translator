@@ -25,7 +25,7 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - Material 3 (Material You baseline palette) design system: color roles, typography,
   shapes, state layers, filled/outlined components, bottom sheet, and snackbar.
 - Roboto Variable and Material Symbols Rounded, bundled locally for offline use.
-- Turkish UI with system light/dark theme.
+- English UI with system light/dark theme.
 - Unit tests for every codec, including known vectors, Unicode, tampering, and wrong-password cases.
 
 ## Tech stack
@@ -85,7 +85,6 @@ src/
 - Material You dynamic color on Android 12+ via Capacitor
 - App icon, splash screen, release signing
 - Optional PWA install and Android share-sheet intake
-- English UI
 
 ## License
 

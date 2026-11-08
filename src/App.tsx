@@ -62,44 +62,48 @@ function App() {
   const handlePaste = useCallback(async () => {
     const text = await readClipboard()
     if (text === null) {
-      showToast('Panoya erişilemedi. Metni elle yapıştır.')
+      showToast('Could not access the clipboard. Paste the text manually.')
       return
     }
     if (text.length === 0) {
-      showToast('Pano boş.')
+      showToast('Clipboard is empty.')
       return
     }
     updateInput(text)
-    showToast('Panodan yapıştırıldı.')
+    showToast('Pasted from clipboard.')
   }, [showToast, updateInput])
 
   const handleCopy = useCallback(async () => {
     if (output.length === 0) return
-    showToast((await copyText(output)) ? 'Panoya kopyalandı.' : 'Kopyalanamadı.')
+    showToast((await copyText(output)) ? 'Copied to clipboard.' : 'Could not copy.')
   }, [output, showToast])
 
   const handleShare = useCallback(async () => {
     if (output.length === 0) return
     const result = await shareText(output)
-    if (result === 'shared') showToast('Paylaşım açıldı.')
-    else if (result === 'copied') showToast('Panoya kopyalandı.')
-    else showToast('Paylaşılamadı.')
+    if (result === 'shared') showToast('Share sheet opened.')
+    else if (result === 'copied') showToast('Copied to clipboard.')
+    else showToast('Could not share.')
   }, [output, showToast])
 
   const handleSwap = useCallback(() => {
-    if (swap()) showToast('Çıktı girişe taşındı.')
+    if (swap()) showToast('Output moved to input.')
   }, [showToast, swap])
 
-  const encodeLabel = cipher.category === 'encoding' ? 'Kodla' : 'Şifrele'
+  const isEncoding = cipher.category === 'encoding'
+  const encodeLabel = isEncoding ? 'Encode' : 'Encrypt'
+  const decodeLabel = isEncoding ? 'Decode' : 'Decrypt'
   const hasTurkishCharacters = /[çğıöşüÇĞİÖŞÜ]/u.test(input)
 
   const inputPlaceholder = isOneWay
-    ? 'Özetlenecek metni yapıştır…'
+    ? 'Paste text to hash…'
     : direction === 'decode'
-      ? 'Çözülecek metni yapıştır…'
-      : cipher.category === 'encoding'
-        ? 'Kodlanacak metni yapıştır…'
-        : 'Şifrelenecek metni yapıştır…'
+      ? isEncoding
+        ? 'Paste text to decode…'
+        : 'Paste text to decrypt…'
+      : isEncoding
+        ? 'Paste text to encode…'
+        : 'Paste text to encrypt…'
 
   return (
     <div className="app">
@@ -108,7 +112,7 @@ function App() {
           <span className="app-logo">
             <Icon name="lock" size={24} />
           </span>
-          <h1 className="app-title">Şifre Çevirmen</h1>
+          <h1 className="app-title">Cipher Translator</h1>
         </div>
       </header>
 
@@ -138,7 +142,7 @@ function App() {
           </button>
 
           {isOneWay ? null : (
-            <div className="segmented-button segmented-button--full" role="group" aria-label="Dönüşüm yönü">
+            <div className="segmented-button segmented-button--full" role="group" aria-label="Conversion direction">
               <button
                 type="button"
                 className={direction === 'encode' ? 'is-active' : ''}
@@ -155,7 +159,7 @@ function App() {
                 onClick={() => changeDirection('decode')}
               >
                 <Icon name="unlock" size={18} />
-                Çöz
+                {decodeLabel}
               </button>
             </div>
           )}
@@ -175,7 +179,7 @@ function App() {
               onClick={() => changeAlphabet('tr')}
             >
               <Icon name="info" size={18} />
-              <span>Türkçe karakter algılandı · TR alfabesine geç</span>
+              <span>Turkish characters detected · Switch to TR alphabet</span>
             </button>
           ) : null}
         </section>
@@ -183,10 +187,10 @@ function App() {
         <section className="card input-card" aria-labelledby="source-label">
           <div className="card-head">
             <label className="card-label" id="source-label" htmlFor="source">
-              Metin
+              Text
             </label>
             <span className="supporting-text">
-              {input.length.toLocaleString('tr-TR')} karakter
+              {input.length.toLocaleString('en-US')} characters
             </span>
           </div>
           <textarea
@@ -200,7 +204,7 @@ function App() {
           <div className="card-actions">
             <button type="button" className="text-button" onClick={handlePaste}>
               <Icon name="paste" size={18} />
-              Yapıştır
+              Paste
             </button>
             <button
               type="button"
@@ -209,7 +213,7 @@ function App() {
               disabled={input.length === 0}
             >
               <Icon name="trash" size={18} />
-              Temizle
+              Clear
             </button>
           </div>
         </section>
@@ -221,8 +225,8 @@ function App() {
             className="swap-button"
             onClick={handleSwap}
             disabled={output.length === 0 || isOneWay}
-            aria-label="Çıktıyı girişe taşı"
-            title="Çıktıyı girişe taşı"
+            aria-label="Move output to input"
+            title="Move output to input"
           >
             <Icon name="swap" size={20} />
           </button>
@@ -239,18 +243,18 @@ function App() {
         <section className="card output-card" aria-labelledby="result-label">
           <div className="card-head">
             <label className="card-label" id="result-label" htmlFor="result">
-              {isOneWay ? 'Özet' : 'Sonuç'}
+              {isOneWay ? 'Digest' : 'Result'}
             </label>
             <span className="supporting-text output-status">
               {isBusy ? (
                 <>
                   <span className="spinner spinner--small" aria-hidden="true" />
-                  Hesaplanıyor…
+                  Calculating…
                 </>
               ) : output.length > 0 ? (
-                `${output.length.toLocaleString('tr-TR')} karakter`
+                `${output.length.toLocaleString('en-US')} characters`
               ) : (
-                'Hazır'
+                'Ready'
               )}
             </span>
           </div>
@@ -259,7 +263,7 @@ function App() {
             className="card-textarea card-textarea--output"
             value={output}
             readOnly
-            placeholder="Sonuç burada görünecek…"
+            placeholder="The result will appear here…"
             spellCheck={false}
           />
           <div className="card-actions">
@@ -270,7 +274,7 @@ function App() {
               disabled={output.length === 0}
             >
               <Icon name="copy" size={18} />
-              Kopyala
+              Copy
             </button>
             <button
               type="button"
@@ -279,7 +283,7 @@ function App() {
               disabled={output.length === 0}
             >
               <Icon name="share" size={18} />
-              Paylaş
+              Share
             </button>
           </div>
         </section>

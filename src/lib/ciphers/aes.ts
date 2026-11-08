@@ -47,7 +47,7 @@ async function deriveKey(
 
 export async function aesEncrypt(input: string, password: string): Promise<string> {
   if (password.length === 0) {
-    throw new CipherError('missing-key', 'AES şifreleme için bir parola girin.')
+    throw new CipherError('missing-key', 'Enter a password to encrypt.')
   }
 
   const crypto = getCrypto()
@@ -71,7 +71,7 @@ export async function aesEncrypt(input: string, password: string): Promise<strin
 
 export async function aesDecrypt(input: string, password: string): Promise<string> {
   if (password.length === 0) {
-    throw new CipherError('missing-key', 'AES çözme için bir parola girin.')
+    throw new CipherError('missing-key', 'Enter a password to decrypt.')
   }
 
   const parts = input.trim().split('.')

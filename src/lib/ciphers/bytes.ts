@@ -10,7 +10,7 @@ export function decodeUtf8(bytes: Uint8Array<ArrayBufferLike>): string {
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes)
   } catch {
-    throw new CipherError('invalid-input', 'Veri geçerli bir UTF-8 metni değil.')
+    throw new CipherError('invalid-input', 'Data is not valid UTF-8 text.')
   }
 }
 
@@ -26,7 +26,7 @@ export function hexToBytes(value: string): Uint8Array<ArrayBuffer> {
   const clean = value.replace(/\s+/g, '')
   if (clean.length === 0) return new Uint8Array()
   if (clean.length % 2 !== 0 || !/^[0-9a-f]+$/i.test(clean)) {
-    throw new CipherError('invalid-input', 'Hex metni çift sayıda onaltılık karakter içermeli.')
+    throw new CipherError('invalid-input', 'Hex must contain an even number of hexadecimal characters.')
   }
 
   const bytes = new Uint8Array(clean.length / 2)
@@ -47,7 +47,7 @@ export function bytesToBase64(bytes: Uint8Array<ArrayBufferLike>): string {
 export function base64ToBytes(value: string): Uint8Array<ArrayBuffer> {
   const clean = value.replace(/\s+/g, '')
   if (!/^[A-Za-z0-9+/]*={0,2}$/.test(clean)) {
-    throw new CipherError('invalid-input', 'Base64 metni geçersiz karakterler içeriyor.')
+    throw new CipherError('invalid-input', 'Base64 contains invalid characters.')
   }
 
   const padded = clean.padEnd(Math.ceil(clean.length / 4) * 4, '=')
@@ -55,7 +55,7 @@ export function base64ToBytes(value: string): Uint8Array<ArrayBuffer> {
   try {
     binary = atob(padded)
   } catch {
-    throw new CipherError('invalid-input', 'Base64 metni geçersiz.')
+    throw new CipherError('invalid-input', 'Base64 is invalid.')
   }
 
   const bytes = new Uint8Array(binary.length)

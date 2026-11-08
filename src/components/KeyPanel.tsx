@@ -34,7 +34,7 @@ export function KeyPanel({
         <div className="slider-field">
           <div className="slider-head">
             <label className="field-label" htmlFor="caesar-shift">
-              Kaydırma
+              Shift
             </label>
             <span className="slider-value">{shiftValue}</span>
           </div>
@@ -70,7 +70,7 @@ export function KeyPanel({
             spellCheck={false}
           />
           <label className="md-outlined-field__label" htmlFor="cipher-key">
-            Anahtar kelime
+            Keyword
           </label>
         </div>
       ) : null}
@@ -89,13 +89,13 @@ export function KeyPanel({
             spellCheck={false}
           />
           <label className="md-outlined-field__label" htmlFor="cipher-password">
-            Parola
+            Password
           </label>
           <button
             type="button"
             className="md-icon-button md-outlined-field__trailing"
             onClick={() => setPasswordVisible((visible) => !visible)}
-            aria-label={passwordVisible ? 'Parolayı gizle' : 'Parolayı göster'}
+            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
           >
             <Icon name={passwordVisible ? 'eyeOff' : 'eye'} size={22} />
           </button>
@@ -104,16 +104,17 @@ export function KeyPanel({
 
       {showAlphabet ? (
         <div className="alphabet-row">
-          <span className="field-label">Alfabe</span>
+          <span className="field-label">Alphabet</span>
           <div
             className="segmented-button segmented-button--small"
             role="group"
-            aria-label="Alfabe seçimi"
+            aria-label="Alphabet selection"
           >
             <button
               type="button"
               className={alphabet === 'en' ? 'is-active' : ''}
               aria-pressed={alphabet === 'en'}
+              aria-label="English alphabet"
               onClick={() => onAlphabetChange('en')}
             >
               {alphabet === 'en' ? <Icon name="check" size={16} /> : null}
@@ -123,6 +124,7 @@ export function KeyPanel({
               type="button"
               className={alphabet === 'tr' ? 'is-active' : ''}
               aria-pressed={alphabet === 'tr'}
+              aria-label="Turkish alphabet"
               onClick={() => onAlphabetChange('tr')}
             >
               {alphabet === 'tr' ? <Icon name="check" size={16} /> : null}

@@ -23,21 +23,21 @@ export function describeCipherError(error: unknown): string {
   if (error instanceof CipherError) {
     switch (error.code) {
       case 'missing-key':
-        return error.detail ?? 'Bir parola veya anahtar girin.'
+        return error.detail ?? 'Enter a password or key.'
       case 'invalid-key':
-        return error.detail ?? 'Girilen anahtar geçersiz.'
+        return error.detail ?? 'The key is invalid.'
       case 'invalid-input':
-        return error.detail ?? 'Giriş bu yöntem için geçerli değil.'
+        return error.detail ?? 'The input is not valid for this method.'
       case 'unsupported-characters':
-        return error.detail ?? 'Giriş desteklenmeyen karakterler içeriyor.'
+        return error.detail ?? 'The input contains unsupported characters.'
       case 'decrypt-failed':
-        return 'Parola yanlış veya veri bozulmuş.'
+        return 'Wrong password or corrupted data.'
       case 'invalid-format':
-        return 'Metin bu yöntemin geçerli bir çıktısı değil.'
+        return 'The text is not a valid output for this method.'
       case 'crypto-unavailable':
-        return 'Tarayıcının kripto API’si kullanılamıyor. Uygulamayı localhost veya APK üzerinden açın.'
+        return 'The browser crypto API is unavailable. Open the app over localhost or in the APK.'
     }
   }
 
-  return 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.'
+  return 'Something went wrong. Please try again.'
 }

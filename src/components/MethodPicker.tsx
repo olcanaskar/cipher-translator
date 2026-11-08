@@ -82,7 +82,7 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
         <div className="sheet-handle" aria-hidden="true" />
         <header className="sheet-head">
           <h2 className="sheet-title" id="method-picker-title">
-            Yöntem seç
+            Choose a method
           </h2>
           <button type="button" className="sheet-close" onClick={close} aria-label="Kapat">
             <Icon name="close" size={24} />
@@ -98,10 +98,10 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Yöntem ara…"
+            placeholder="Search methods…"
             autoComplete="off"
             spellCheck={false}
-            aria-label="Yöntem ara"
+            aria-label="Search methods"
           />
         </div>
 
@@ -109,7 +109,7 @@ export function MethodPicker({ open, selectedId, onClose, onSelect }: MethodPick
           {groups.length === 0 ? (
             <div className="empty-search">
               <Icon name="search" size={22} />
-              <p>“{query}” için sonuç bulunamadı.</p>
+              <p>No results for “{query}”.</p>
             </div>
           ) : (
             groups.map((group) => (
