@@ -138,15 +138,8 @@ function App() {
           <span className="app-logo">
             <Icon name="lock" size={24} />
           </span>
-          <div className="brand-copy">
-            <h1 className="app-title">Şifre Çevirmen</h1>
-            <p className="app-subtitle">şifrele · çöz · dönüştür</p>
-          </div>
+          <h1 className="app-title">Şifre Çevirmen</h1>
         </div>
-        <span className="status-chip">
-          <Icon name="offline" size={18} />
-          Offline
-        </span>
       </header>
 
       <main className={`content${cipher.manual ? ' content--with-bar' : ''}`}>
@@ -200,11 +193,6 @@ function App() {
         </div>
 
         <section className="card method-card">
-          <div className="card-head">
-            <span className="card-label">Yöntem</span>
-            <span className="supporting-text">13 dönüşüm</span>
-          </div>
-
           <button
             type="button"
             className="method-button"
@@ -333,10 +321,6 @@ function App() {
           </div>
         </section>
 
-        <p className="privacy-note">
-          <Icon name="shield" size={16} />
-          <span>Metin cihazından ayrılmaz; hiçbir sunucuya gönderilmez.</span>
-        </p>
       </main>
 
       {cipher.manual ? (

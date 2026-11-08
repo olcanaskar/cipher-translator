@@ -40,7 +40,6 @@ const aesGcm: CipherDefinition = {
   keyKind: 'password',
   security: 'strong',
   manual: true,
-  note: 'Parola cihazda saklanmaz. Aynı parola olmadan metin çözülemez.',
   encode: (input, context) => aesEncrypt(input, context.key),
   decode: (input, context) => aesDecrypt(input, context.key),
 }
