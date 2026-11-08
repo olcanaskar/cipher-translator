@@ -109,6 +109,7 @@ export function useConverter() {
           const result = await runCipher(cipher, direction, input, { key, alphabet })
           if (requestId.current !== currentRequest) return
           setOutput(result)
+          setError(null)
         } catch (caught) {
           if (requestId.current !== currentRequest) return
           setOutput('')
