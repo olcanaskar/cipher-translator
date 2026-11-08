@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cipher Translator</string>
+    <string name="title_activity_main">Cipher Translator</string>
+    <string name="package_name">com.olcan.ciphertranslator</string>
+    <string name="custom_url_scheme">com.olcan.ciphertranslator</string>
+</resources>

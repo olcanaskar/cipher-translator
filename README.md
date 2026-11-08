@@ -22,8 +22,11 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - English and Turkish alphabets for the classical ciphers that support them.
 - Live conversion for every method. AES uses a short debounce because PBKDF2 runs on each change.
 - Copy, share, paste, clear, and output-to-input swap.
-- Material 3 (Material You baseline palette) design system: color roles, typography,
-  shapes, state layers, filled/outlined components, bottom sheet, and snackbar.
+- Material 3 design system: color roles, typography, shapes, state layers,
+  filled/outlined components, bottom sheet, and snackbar.
+- Material You dynamic color on Android 12+: a small Capacitor plugin reads the
+  wallpaper-based system palette and updates the M3 color tokens at runtime. Older
+  Android versions fall back to the bundled baseline palette.
 - Roboto Variable and Material Symbols Rounded, bundled locally for offline use.
 - English UI with system light/dark theme.
 - Unit tests for every codec, including known vectors, Unicode, tampering, and wrong-password cases.
@@ -36,7 +39,8 @@ Most "encrypt text online" tools send the plaintext to a server. This app is loc
 - Web Crypto API for AES-GCM, PBKDF2, SHA-256, and SHA-512
 - `@noble/hashes` for MD5 compatibility
 - Vitest
-- Capacitor 8 (planned) for the Android APK
+- Capacitor 8 for the Android app
+- Custom `MaterialYou` Capacitor plugin (Java) for Android 12+ dynamic color
 
 No backend. The production app will bundle the built static files inside the APK.
 
@@ -46,6 +50,21 @@ No backend. The production app will bundle the built static files inside the APK
 npm install
 npm run dev
 ```
+
+Android:
+
+```bash
+npm run cap:sync
+npm run android:build
+```
+
+The debug APK is written to
+`android/app/build/outputs/apk/debug/app-debug.apk`. Open the native project with
+`npm run android:open`.
+
+The Android build requires JDK 21 (Gradle 8.14 does not support JDK 25).
+`android:build` looks for a JDK 21 installation automatically; install Microsoft
+OpenJDK 21 if it is missing.
 
 Other commands:
 
@@ -81,8 +100,6 @@ src/
 ## Roadmap
 
 - History and settings (local-only, clearable)
-- Capacitor Android wrapper and debug APK
-- Material You dynamic color on Android 12+ via Capacitor
 - App icon, splash screen, release signing
 - Optional PWA install and Android share-sheet intake
 
