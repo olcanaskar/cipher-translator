@@ -113,55 +113,6 @@ function App() {
       </header>
 
       <main className="content">
-        <section className="card input-card" aria-labelledby="source-label">
-          <div className="card-head">
-            <label className="card-label" id="source-label" htmlFor="source">
-              Metin
-            </label>
-            <span className="supporting-text">
-              {input.length.toLocaleString('tr-TR')} karakter
-            </span>
-          </div>
-          <textarea
-            id="source"
-            className="card-textarea"
-            value={input}
-            onChange={(event) => updateInput(event.target.value)}
-            placeholder={inputPlaceholder}
-            spellCheck={false}
-          />
-          <div className="card-actions">
-            <button type="button" className="text-button" onClick={handlePaste}>
-              <Icon name="paste" size={18} />
-              Yapıştır
-            </button>
-            <button
-              type="button"
-              className="text-button"
-              onClick={clear}
-              disabled={input.length === 0}
-            >
-              <Icon name="trash" size={18} />
-              Temizle
-            </button>
-          </div>
-        </section>
-
-        <div className="swap-row">
-          <span className="swap-line" />
-          <button
-            type="button"
-            className="swap-button"
-            onClick={handleSwap}
-            disabled={output.length === 0 || isOneWay}
-            aria-label="Çıktıyı girişe taşı"
-            title="Çıktıyı girişe taşı"
-          >
-            <Icon name="swap" size={20} />
-          </button>
-          <span className="swap-line" />
-        </div>
-
         <section className="card method-card">
           <button
             type="button"
@@ -227,8 +178,56 @@ function App() {
               <span>Türkçe karakter algılandı · TR alfabesine geç</span>
             </button>
           ) : null}
-
         </section>
+
+        <section className="card input-card" aria-labelledby="source-label">
+          <div className="card-head">
+            <label className="card-label" id="source-label" htmlFor="source">
+              Metin
+            </label>
+            <span className="supporting-text">
+              {input.length.toLocaleString('tr-TR')} karakter
+            </span>
+          </div>
+          <textarea
+            id="source"
+            className="card-textarea"
+            value={input}
+            onChange={(event) => updateInput(event.target.value)}
+            placeholder={inputPlaceholder}
+            spellCheck={false}
+          />
+          <div className="card-actions">
+            <button type="button" className="text-button" onClick={handlePaste}>
+              <Icon name="paste" size={18} />
+              Yapıştır
+            </button>
+            <button
+              type="button"
+              className="text-button"
+              onClick={clear}
+              disabled={input.length === 0}
+            >
+              <Icon name="trash" size={18} />
+              Temizle
+            </button>
+          </div>
+        </section>
+
+        <div className="swap-row">
+          <span className="swap-line" />
+          <button
+            type="button"
+            className="swap-button"
+            onClick={handleSwap}
+            disabled={output.length === 0 || isOneWay}
+            aria-label="Çıktıyı girişe taşı"
+            title="Çıktıyı girişe taşı"
+          >
+            <Icon name="swap" size={20} />
+          </button>
+          <span className="swap-line" />
+        </div>
 
         {error ? (
           <div className="error-banner" role="alert">
